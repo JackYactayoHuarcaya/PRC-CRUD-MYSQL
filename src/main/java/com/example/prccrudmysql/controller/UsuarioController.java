@@ -2,17 +2,24 @@ package com.example.prccrudmysql.controller;
 
 import com.example.prccrudmysql.application.CreateUsuario;
 import com.example.prccrudmysql.application.DeleteUsuario;
+import com.example.prccrudmysql.application.ReadAllUsuarios;
 import com.example.prccrudmysql.domain.Usuario;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
     private final CreateUsuario createUsuario;
     private final DeleteUsuario deleteUsuario;
-    public UsuarioController(CreateUsuario createUsuario,DeleteUsuario deleteUsuario){
+    private final ReadAllUsuarios readAllUsuarios;
+    public UsuarioController(CreateUsuario createUsuario,
+                             ReadAllUsuarios readAllUsuarios,
+                             DeleteUsuario deleteUsuario){
         this.createUsuario=createUsuario;
         this.deleteUsuario=deleteUsuario;
+        this.readAllUsuarios =readAllUsuarios;
     }
     @PostMapping
     public Usuario create(@RequestBody Usuario usuario){
@@ -21,5 +28,9 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public  void create(@PathVariable Long id){
         this.deleteUsuario.execute(id);
+    }
+    @GetMapping
+    public List<Usuario> readAll(){
+      return this.readAllUsuarios.execute();
     }
 }
